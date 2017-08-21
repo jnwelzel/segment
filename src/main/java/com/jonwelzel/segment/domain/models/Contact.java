@@ -1,9 +1,8 @@
 package com.jonwelzel.segment.domain.models;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import com.fasterxml.jackson.annotation.JsonProperty;
+
+import javax.persistence.*;
 
 @Entity
 public class Contact {
@@ -14,6 +13,7 @@ public class Contact {
 
     private String name;
 
+    @Column(unique = true)
     private String email;
 
     private String jobTitle;
@@ -21,6 +21,13 @@ public class Contact {
     private String state;
 
     private Integer age;
+
+    @JsonProperty("id")
+    private long frontendId;
+
+    public long getFrontendId() {
+        return id;
+    }
 
     public String getName() {
         return name;
