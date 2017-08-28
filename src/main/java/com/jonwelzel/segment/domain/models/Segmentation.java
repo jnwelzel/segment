@@ -5,6 +5,7 @@ import com.jonwelzel.segment.domain.enums.NumberOption;
 import com.jonwelzel.segment.domain.enums.TextOption;
 
 import javax.persistence.*;
+import java.util.List;
 
 @Entity
 public class Segmentation {
@@ -40,6 +41,10 @@ public class Segmentation {
     private TextOption jobTitleOperator;
 
     private String jobTitleValue;
+
+    @Transient
+    @JsonProperty("contacts")
+    private List<ContactVO> contacts;
 
     @JsonProperty("id")
     private long frontendId;
@@ -134,5 +139,13 @@ public class Segmentation {
 
     public void setJobTitleValue(String jobTitleValue) {
         this.jobTitleValue = jobTitleValue;
+    }
+
+    public List<ContactVO> getContacts() {
+        return contacts;
+    }
+
+    public void setContacts(List<ContactVO> contacts) {
+        this.contacts = contacts;
     }
 }

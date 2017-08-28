@@ -1,11 +1,9 @@
 package com.jonwelzel.segment.infrastructure;
 
 import com.jonwelzel.segment.domain.models.Segmentation;
-import org.springframework.data.repository.PagingAndSortingRepository;
-import org.springframework.data.rest.core.annotation.RepositoryRestResource;
-import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.stereotype.Repository;
 
-@RepositoryRestResource(collectionResourceRel = "segmentations", path = "segmentations")
-@CrossOrigin
-public interface SegmentationRepository extends PagingAndSortingRepository<Segmentation, Long> {
+@Repository
+public interface SegmentationRepository extends JpaRepository<Segmentation, Long> {
 }
