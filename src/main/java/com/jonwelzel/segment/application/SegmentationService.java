@@ -2,8 +2,9 @@ package com.jonwelzel.segment.application;
 
 import com.jonwelzel.segment.domain.enums.NumberOption;
 import com.jonwelzel.segment.domain.models.Contact;
-import com.jonwelzel.segment.domain.models.ContactVO;
+import com.jonwelzel.segment.domain.models.ContactDTO;
 import com.jonwelzel.segment.domain.models.Segmentation;
+import com.jonwelzel.segment.domain.models.SegmentationDTO;
 import com.jonwelzel.segment.infrastructure.ContactRepository;
 import com.jonwelzel.segment.infrastructure.SegmentationRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -36,7 +37,7 @@ public class SegmentationService {
         return segmentationRepository.findAll();
     }
 
-    public Segmentation getSegmentationWithContacts(Long segmentationId) {
+    public SegmentationDTO getSegmentationWithContacts(Long segmentationId) {
         Segmentation segmentation = segmentationRepository.getOne(segmentationId);
 
         CriteriaBuilder criteriaBuilder = entityManager.getCriteriaBuilder();
@@ -60,13 +61,13 @@ public class SegmentationService {
         }
 
         TypedQuery<Contact> typedQuery = entityManager.createQuery(query);
-        List<ContactVO> contacts = new ArrayList<>();
+        List<ContactDTO> contacts = new ArrayList<>();
         for (Contact contact : typedQuery.getResultList()) {
-            contacts.add(contact.toVO());
+            contacts.add(contact.toDTO());
         }
         segmentation.setContacts(contacts);
 
-        return segmentation;
+        return segmentation.toDTO();
     }
 
     private Predicate getNumberPredicateFromOperator(Path agePath, NumberOption operator, CriteriaBuilder criteriaBuilder, Integer value) {

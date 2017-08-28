@@ -1,7 +1,7 @@
 package com.jonwelzel.segment.domain.models;
 
-public class ContactVO {
-    public ContactVO(long id, String name, String email, String jobTitle, String state, Integer age) {
+public class ContactDTO {
+    public ContactDTO(long id, String name, String email, String jobTitle, String state, Integer age) {
         this.id = id;
         this.name = name;
         this.email = email;

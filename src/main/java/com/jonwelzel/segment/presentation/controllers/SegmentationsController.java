@@ -2,6 +2,7 @@ package com.jonwelzel.segment.presentation.controllers;
 
 import com.jonwelzel.segment.application.SegmentationService;
 import com.jonwelzel.segment.domain.models.Segmentation;
+import com.jonwelzel.segment.domain.models.SegmentationDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -26,7 +27,7 @@ public class SegmentationsController {
     }
 
     @RequestMapping(value = "/{segmentationId}", method = RequestMethod.GET)
-    public Segmentation getOneWithContacts(@PathVariable Long segmentationId) {
+    public SegmentationDTO getOneWithContacts(@PathVariable Long segmentationId) {
         return segmentationService.getSegmentationWithContacts(segmentationId);
     }
 }

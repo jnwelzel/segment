@@ -1,56 +1,62 @@
 package com.jonwelzel.segment.domain.models;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
 import com.jonwelzel.segment.domain.enums.NumberOption;
 import com.jonwelzel.segment.domain.enums.TextOption;
 
-import javax.persistence.*;
 import java.util.List;
 
-@Entity
-public class Segmentation {
+public class SegmentationDTO {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    public SegmentationDTO() {}
+
+    public SegmentationDTO(long id, String segmentationName, TextOption nameOperator, String nameValue, TextOption emailOperator, String emailValue, NumberOption ageOperator, Integer ageValue, TextOption stateOperator, String stateValue, TextOption jobTitleOperator, String jobTitleValue, List<ContactDTO> contacts) {
+        this.id = id;
+        this.segmentationName = segmentationName;
+        this.nameOperator = nameOperator;
+        this.nameValue = nameValue;
+        this.emailOperator = emailOperator;
+        this.emailValue = emailValue;
+        this.ageOperator = ageOperator;
+        this.ageValue = ageValue;
+        this.stateOperator = stateOperator;
+        this.stateValue = stateValue;
+        this.jobTitleOperator = jobTitleOperator;
+        this.jobTitleValue = jobTitleValue;
+        this.contacts = contacts;
+    }
+
     private long id;
 
-    @Column(unique = true)
     private String segmentationName;
 
-    @Enumerated(EnumType.STRING)
     private TextOption nameOperator;
 
     private String nameValue;
 
-    @Enumerated(EnumType.STRING)
     private TextOption emailOperator;
 
     private String emailValue;
 
-    @Enumerated(EnumType.STRING)
     private NumberOption ageOperator;
 
     private Integer ageValue;
 
-    @Enumerated(EnumType.STRING)
     private TextOption stateOperator;
 
     private String stateValue;
 
-    @Enumerated(EnumType.STRING)
     private TextOption jobTitleOperator;
 
     private String jobTitleValue;
 
-    @Transient
-    @JsonProperty("contacts")
     private List<ContactDTO> contacts;
 
-    @JsonProperty("id")
-    private long frontendId;
-
-    public long getFrontendId() {
+    public long getId() {
         return id;
+    }
+
+    public void setId(long id) {
+        this.id = id;
     }
 
     public String getSegmentationName() {
@@ -147,9 +153,5 @@ public class Segmentation {
 
     public void setContacts(List<ContactDTO> contacts) {
         this.contacts = contacts;
-    }
-
-    public SegmentationDTO toDTO() {
-        return new SegmentationDTO(this.id, this.segmentationName, this.nameOperator, this.nameValue, this.emailOperator, this.emailValue, this.ageOperator, this.ageValue, this.stateOperator, this.stateValue, this.jobTitleOperator, this.jobTitleValue, this.contacts);
     }
 }

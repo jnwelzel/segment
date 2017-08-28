@@ -69,7 +69,7 @@ public class Contact {
         this.age = age;
     }
 
-    public ContactVO toVO() {
-        return new ContactVO(this.id, this.name, this.email, this.jobTitle, this.state, this.age);
+    public ContactDTO toDTO() {
+        return new ContactDTO(this.id, this.name, this.email, this.jobTitle, this.state, this.age);
     }
 }
