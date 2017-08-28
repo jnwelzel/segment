@@ -10,7 +10,6 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/segmentations")
-@CrossOrigin
 public class SegmentationsController {
 
     @Autowired

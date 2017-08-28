@@ -9,7 +9,6 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/contacts")
-@CrossOrigin
 public class ContactsController {
 
     @Autowired
@@ -23,6 +22,11 @@ public class ContactsController {
     @RequestMapping(method = RequestMethod.GET)
     public List<Contact> getContacts() {
         return contactRepository.findAll();
+    }
+
+    @RequestMapping(method = RequestMethod.PUT)
+    public Contact update(@RequestBody Contact contact) {
+        return contactRepository.save(contact);
     }
 
 }
