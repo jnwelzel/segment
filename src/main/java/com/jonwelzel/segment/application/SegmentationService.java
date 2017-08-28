@@ -1,6 +1,7 @@
 package com.jonwelzel.segment.application;
 
 import com.jonwelzel.segment.domain.enums.NumberOption;
+import com.jonwelzel.segment.domain.enums.TextOption;
 import com.jonwelzel.segment.domain.models.Contact;
 import com.jonwelzel.segment.domain.models.ContactDTO;
 import com.jonwelzel.segment.domain.models.Segmentation;
@@ -48,16 +49,16 @@ public class SegmentationService {
             query.where(getNumberPredicateFromOperator(c.get("age"), segmentation.getAgeOperator(), criteriaBuilder, segmentation.getAgeValue()));
         }
         if (segmentation.getEmailValue() != null && !segmentation.getEmailValue().equals("")) {
-
+            query.where(getTextPredicateFromOperator(c.get("email"), segmentation.getEmailOperator(), criteriaBuilder, segmentation.getEmailValue()));
         }
         if (segmentation.getNameValue() != null && !segmentation.getNameValue().equals("")) {
-
+            query.where(getTextPredicateFromOperator(c.get("name"), segmentation.getNameOperator(), criteriaBuilder, segmentation.getNameValue()));
         }
         if (segmentation.getStateValue() != null && !segmentation.getStateValue().equals("")) {
-
+            query.where(getTextPredicateFromOperator(c.get("state"), segmentation.getStateOperator(), criteriaBuilder, segmentation.getStateValue()));
         }
         if (segmentation.getJobTitleValue() != null && !segmentation.getJobTitleValue().equals("")) {
-
+            query.where(getTextPredicateFromOperator(c.get("jobTitle"), segmentation.getJobTitleOperator(), criteriaBuilder, segmentation.getJobTitleValue()));
         }
 
         TypedQuery<Contact> typedQuery = entityManager.createQuery(query);
@@ -70,24 +71,45 @@ public class SegmentationService {
         return segmentation.toDTO();
     }
 
-    private Predicate getNumberPredicateFromOperator(Path agePath, NumberOption operator, CriteriaBuilder criteriaBuilder, Integer value) {
+    private Predicate getNumberPredicateFromOperator(Path attribute, NumberOption operator, CriteriaBuilder criteriaBuilder, Integer value) {
+        Predicate result = null;
+
         if (operator == NumberOption.EQUALS_TO) {
-            return criteriaBuilder.equal(agePath, value);
+            result = criteriaBuilder.equal(attribute, value);
         }
         if (operator == NumberOption.GREATER_THAN) {
-            return criteriaBuilder.gt(agePath, value);
+            result = criteriaBuilder.gt(attribute, value);
         }
         if (operator == NumberOption.GREATER_THAN_EQUAL) {
-            return criteriaBuilder.greaterThanOrEqualTo(agePath, value);
+            result = criteriaBuilder.greaterThanOrEqualTo(attribute, value);
         }
         if (operator == NumberOption.LESS_THAN) {
-            return criteriaBuilder.lt(agePath, value);
+            result = criteriaBuilder.lt(attribute, value);
         }
         if (operator == NumberOption.LESS_THAN_EQUAL) {
-            return criteriaBuilder.lessThanOrEqualTo(agePath, value);
+            result = criteriaBuilder.lessThanOrEqualTo(attribute, value);
         }
 
-        return null;
+        return result;
+    }
+
+    private Predicate getTextPredicateFromOperator(Path attribute, TextOption operator, CriteriaBuilder criteriaBuilder, String value) {
+        Predicate result = null;
+
+        if (operator == TextOption.EQUALS_TO) {
+            result = criteriaBuilder.equal(attribute, value);
+        }
+        if (operator == TextOption.CONTAINS) {
+            result = criteriaBuilder.like(attribute, "%" + value + "%");
+        }
+        if (operator == TextOption.ENDS_WITH) {
+            result = criteriaBuilder.like(attribute, "%" + value);
+        }
+        if (operator == TextOption.STARTS_WITH) {
+            result = criteriaBuilder.like(attribute, value + "%");
+        }
+
+        return result;
     }
 
 }
