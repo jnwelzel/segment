@@ -44,24 +44,27 @@ public class SegmentationService {
         CriteriaBuilder criteriaBuilder = entityManager.getCriteriaBuilder();
         CriteriaQuery<Contact> query = criteriaBuilder.createQuery(Contact.class);
         Root<Contact> c = query.from(Contact.class);
+        List<Predicate> predicates = new ArrayList<>();
 
         if (segmentation.getAgeValue() != null) {
-            query.where(getNumberPredicateFromOperator(c.get("age"), segmentation.getAgeOperator(), criteriaBuilder, segmentation.getAgeValue()));
+            predicates.add(getNumberPredicateFromOperator(c.get("age"), segmentation.getAgeOperator(), criteriaBuilder, segmentation.getAgeValue()));
         }
         if (segmentation.getEmailValue() != null && !segmentation.getEmailValue().equals("")) {
-            query.where(getTextPredicateFromOperator(c.get("email"), segmentation.getEmailOperator(), criteriaBuilder, segmentation.getEmailValue()));
+            predicates.add(getTextPredicateFromOperator(c.get("email"), segmentation.getEmailOperator(), criteriaBuilder, segmentation.getEmailValue()));
         }
         if (segmentation.getNameValue() != null && !segmentation.getNameValue().equals("")) {
-            query.where(getTextPredicateFromOperator(c.get("name"), segmentation.getNameOperator(), criteriaBuilder, segmentation.getNameValue()));
+            predicates.add(getTextPredicateFromOperator(c.get("name"), segmentation.getNameOperator(), criteriaBuilder, segmentation.getNameValue()));
         }
         if (segmentation.getStateValue() != null && !segmentation.getStateValue().equals("")) {
-            query.where(getTextPredicateFromOperator(c.get("state"), segmentation.getStateOperator(), criteriaBuilder, segmentation.getStateValue()));
+            predicates.add(getTextPredicateFromOperator(c.get("state"), segmentation.getStateOperator(), criteriaBuilder, segmentation.getStateValue()));
         }
         if (segmentation.getJobTitleValue() != null && !segmentation.getJobTitleValue().equals("")) {
-            query.where(getTextPredicateFromOperator(c.get("jobTitle"), segmentation.getJobTitleOperator(), criteriaBuilder, segmentation.getJobTitleValue()));
+            predicates.add(getTextPredicateFromOperator(c.get("jobTitle"), segmentation.getJobTitleOperator(), criteriaBuilder, segmentation.getJobTitleValue()));
         }
 
+        query.where(predicates.toArray(new Predicate[]{}));
         TypedQuery<Contact> typedQuery = entityManager.createQuery(query);
+
         List<ContactDTO> contacts = new ArrayList<>();
         for (Contact contact : typedQuery.getResultList()) {
             contacts.add(contact.toDTO());
