@@ -29,4 +29,11 @@ public class SegmentationsController {
     public SegmentationDTO getOneWithContacts(@PathVariable Long segmentationId) {
         return segmentationService.getSegmentationWithContacts(segmentationId);
     }
+
+    @RequestMapping(value = "/{segmentationId}", method = RequestMethod.PUT)
+    public Segmentation update(@RequestBody Segmentation segmentation) {
+        segmentation.setId(segmentation.getFrontendId());
+
+        return segmentationService.save(segmentation);
+    }
 }

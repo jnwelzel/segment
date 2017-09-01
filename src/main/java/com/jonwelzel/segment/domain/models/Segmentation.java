@@ -49,6 +49,10 @@ public class Segmentation {
     @JsonProperty("id")
     private long frontendId;
 
+    public void setId(long id) {
+        this.id = id;
+    }
+
     public long getFrontendId() {
         return id;
     }
