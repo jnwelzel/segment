@@ -6,7 +6,6 @@ import com.jonwelzel.segment.domain.models.Contact;
 import com.jonwelzel.segment.domain.models.ContactDTO;
 import com.jonwelzel.segment.domain.models.Segmentation;
 import com.jonwelzel.segment.domain.models.SegmentationDTO;
-import com.jonwelzel.segment.infrastructure.ContactRepository;
 import com.jonwelzel.segment.infrastructure.SegmentationRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -24,9 +23,6 @@ public class SegmentationService {
     @Autowired
     private SegmentationRepository segmentationRepository;
 
-    @Autowired
-    private ContactRepository contactRepository;
-
     @PersistenceContext
     private EntityManager entityManager;
 
@@ -39,7 +35,10 @@ public class SegmentationService {
     }
 
     public SegmentationDTO getSegmentationWithContacts(Long segmentationId) {
-        Segmentation segmentation = segmentationRepository.getOne(segmentationId);
+        Segmentation segmentation = segmentationRepository.findOne(segmentationId);
+        if (segmentation == null) {
+            return null;
+        }
 
         CriteriaBuilder criteriaBuilder = entityManager.getCriteriaBuilder();
         CriteriaQuery<Contact> query = criteriaBuilder.createQuery(Contact.class);
@@ -65,13 +64,19 @@ public class SegmentationService {
         query.where(predicates.toArray(new Predicate[]{}));
         TypedQuery<Contact> typedQuery = entityManager.createQuery(query);
 
-        List<ContactDTO> contacts = new ArrayList<>();
-        for (Contact contact : typedQuery.getResultList()) {
-            contacts.add(contact.toDTO());
-        }
-        segmentation.setContacts(contacts);
+        segmentation.setContacts(toContactDTOList(typedQuery.getResultList()));
 
         return segmentation.toDTO();
+    }
+
+    private List<ContactDTO> toContactDTOList(List<Contact> contactsList) {
+        List<ContactDTO> contactsDTOList = new ArrayList<>();
+
+        for (Contact contact : contactsList) {
+            contactsDTOList.add(contact.toDTO());
+        }
+
+        return contactsDTOList;
     }
 
     private Predicate getNumberPredicateFromOperator(Path attribute, NumberOption operator, CriteriaBuilder criteriaBuilder, Integer value) {

@@ -1,8 +1,10 @@
 package com.jonwelzel.segment.presentation.controllers;
 
+import com.jonwelzel.segment.application.ContactService;
 import com.jonwelzel.segment.domain.models.Contact;
 import com.jonwelzel.segment.infrastructure.ContactRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -12,21 +14,28 @@ import java.util.List;
 public class ContactsController {
 
     @Autowired
-    private ContactRepository contactRepository;
+    private ContactService contactService;
 
     @RequestMapping(method = RequestMethod.POST)
     public Contact add(@RequestBody Contact contact) {
-        return contactRepository.saveAndFlush(contact);
+        return contactService.save(contact);
     }
 
     @RequestMapping(method = RequestMethod.GET)
     public List<Contact> getContacts() {
-        return contactRepository.findAll();
+        return contactService.findAll();
     }
 
     @RequestMapping(method = RequestMethod.PUT)
     public Contact update(@RequestBody Contact contact) {
-        return contactRepository.save(contact);
+        return contactService.update(contact);
+    }
+
+    @RequestMapping(value = "/{contactId}", method = RequestMethod.DELETE)
+    public ResponseEntity<String> delete(@PathVariable long contactId) {
+        contactService.delete(contactId);
+
+        return ResponseEntity.ok("Contact deleted");
     }
 
 }

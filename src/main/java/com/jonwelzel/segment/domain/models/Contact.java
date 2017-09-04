@@ -7,6 +7,26 @@ import javax.persistence.*;
 @Entity
 public class Contact {
 
+    public Contact() {}
+
+    public Contact(String name, String email, String jobTitle, String state, int age) {
+        this.id = id;
+        this.name = name;
+        this.email = email;
+        this.jobTitle = jobTitle;
+        this.state = state;
+        this.age = age;
+    }
+
+    public Contact(long id, String name, String email, String jobTitle, String state, int age) {
+        this.id = id;
+        this.name = name;
+        this.email = email;
+        this.jobTitle = jobTitle;
+        this.state = state;
+        this.age = age;
+    }
+
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private long id;
