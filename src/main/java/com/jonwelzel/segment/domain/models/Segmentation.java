@@ -28,6 +28,22 @@ public class Segmentation {
         this.contacts = contacts;
     }
 
+    public Segmentation(long id, String segmentationName, TextOption nameOperator, String nameValue, TextOption emailOperator, String emailValue, NumberOption ageOperator, Integer ageValue, TextOption stateOperator, String stateValue, TextOption jobTitleOperator, String jobTitleValue, List<ContactDTO> contacts) {
+        this.id = id;
+        this.segmentationName = segmentationName;
+        this.nameOperator = nameOperator;
+        this.nameValue = nameValue;
+        this.emailOperator = emailOperator;
+        this.emailValue = emailValue;
+        this.ageOperator = ageOperator;
+        this.ageValue = ageValue;
+        this.stateOperator = stateOperator;
+        this.stateValue = stateValue;
+        this.jobTitleOperator = jobTitleOperator;
+        this.jobTitleValue = jobTitleValue;
+        this.contacts = contacts;
+    }
+
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private long id;

@@ -1,6 +1,5 @@
 package com.jonwelzel.segment.presentation.controllers;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.jonwelzel.segment.application.ContactService;
 import com.jonwelzel.segment.domain.models.Contact;
@@ -45,7 +44,7 @@ public class ContactsControllerTests {
     private final List<Contact> sampleContactsList = new ArrayList<>(Arrays.asList(sampleDBContact));
 
     @Before
-    public void setup() throws JsonProcessingException {
+    public void setup() {
         given(contactService.save(any())).willReturn(sampleDBContact);
         given(contactService.update(any())).willReturn(sampleDBContact);
         given(contactService.findAll()).willReturn(sampleContactsList);
